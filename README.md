@@ -4,6 +4,23 @@ A local desktop workspace for notes, sketches and connected ideas. Built from th
 
 ## Install on Windows
 
+For a new PC, open **Windows PowerShell**, paste this complete block and press Enter:
+
+```powershell
+& {
+    $ErrorActionPreference = 'Stop'
+    [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+    $BeastSetup = Join-Path $env:TEMP ('BeastNotesV4-Setup-' + [Guid]::NewGuid().ToString('N') + '.ps1')
+    Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/NoLifeeSSJ/BeastNotes/main/Install.ps1' -OutFile $BeastSetup
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $BeastSetup
+    if ($LASTEXITCODE -ne 0) { throw 'Installation stopped. See the error above.' }
+}
+```
+
+The [short setup script](Install.ps1) downloads a tested release from an immutable GitHub commit, checks its SHA-256, then runs the full installer. It installs to `C:\BeastNotesV4`, installs Python through Windows Package Manager if needed, installs Qt, runs application checks, creates the desktop shortcut and opens V4. Internet access is required. If Windows Package Manager is unavailable and no supported Python is installed, the installer gives the official Python download link.
+
+You can also download the complete installer manually:
+
 Download **[Install-BeastNotesV4.ps1](https://github.com/NoLifeeSSJ/BeastNotes/raw/refs/heads/main/dist/Install-BeastNotesV4.ps1)**. Save it to your Downloads folder. If GitHub displays the script instead, click **Download raw file** (the down-arrow button). The script contains the entire application. Open PowerShell in its download folder and run:
 
 ```powershell
